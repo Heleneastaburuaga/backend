@@ -59,28 +59,35 @@
             return bidaltzekoOK;
         }
 
+        let checkZip = () =>{
+            let bidaltzekoOK = true;
+
+            let zip = document.getElementById("ZipCode");
+            zip.setCustomValidity("");
+
+            let zipCode = zip.value;
+            if (isNaN(zipCode)) {
+                zip.setCustomValidity("Zip kodea zenbaki bat izan behar da derrigorez");
+                bidaltzekoOK = false;
+            }
+            return bidaltzekoOK;
+        }
+
 
         window.onload = () => {
             document.getElementById("izena").oninput = check;
-            document.querySelector("#formularioa").addEventListener("submit", (e) => {
-                e.preventDefault();
-                if (check()) e.target.submit();
-            });
-
             document.getElementById("ConfirmPassword").oninput = checkPassword;
             document.getElementById("password").oninput = checkPassword;
-            document.querySelector("#formularioa").addEventListener("submit", (e) => {
-                e.preventDefault();
-                if (checkPassword()) e.target.submit();
-            });
-
             document.getElementById("city").oninput = checkCity;
+            document.getElementById("ZipCode").oninput = checkZip;
             document.querySelector("#formularioa").addEventListener("submit", (e) => {
                 e.preventDefault();
-                if (checkCity()) e.target.submit();
+                if (check() && checkPassword()&&checkCity()&&checkZip){
+                    e.target.submit();
+                } 
             });
-
         };
+        
     </script>
 </head>
 <body>
