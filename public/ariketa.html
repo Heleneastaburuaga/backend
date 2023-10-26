@@ -4,21 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        label {
-            display: block;
-            margin-bottom: 10px;
-        }
-    
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            margin-bottom: 10px;
-        }
-        input[type="date"] {
-            margin-bottom: 10px;
-        }
-    </style>
 
     <script>
 
@@ -29,28 +14,70 @@
             
             let bidaltzekoOK = true;
 
-            let abizen = document.getElementById("abizena");
-            abizen.setCustomValidity("");
+            let izen = document.getElementById("izena");
+            izen.setCustomValidity("");
 
-            let abizena = abizen.value;
-            let abizenaRegex = /^[A-Z][a-z]+$/;
-            if (abizenaRegex.test(abizena)) {
-                document.getElementById("abizena").style.backgroundColor = "green";
+            let izena = izen.value;
+            let izenaRegex = /^[A-Z][a-z]+$/;
+            if (izenaRegex.test(izena)) {
+                document.getElementById("izena").style.backgroundColor = "green";
             } else {
-                document.getElementById("abizena").style.backgroundColor = "red";
-                abizen.setCustomValidity("Soilik letrak onartzen dira eta lehenengo letra larria izan behar da");
+                document.getElementById("izena").style.backgroundColor = "red";
+                izen.setCustomValidity("Soilik letrak onartzen dira eta lehenengo letra larria izan behar da");
                 bidaltzekoOK = false;
             }
+            return bidaltzekoOK;
+        }
 
+        let checkPassword = () =>{
+            let bidaltzekoOK = true;
+
+            let pasahitz1 =document.getElementById("password");
+            let pasahitz2=document.getElementById("ConfirmPassword");
+            pasahitz2.setCustomValidity("");
+
+            let pasahitza1=pasahitz1.value;
+            let pasahitza2=pasahitz2.value;
+            if(pasahitza1!==pasahitza2) {
+                pasahitz2.setCustomValidity("Pasahitzak ez dira berdinak");
+                bidaltzekoOK = false;
+            }
+            return bidaltzekoOK;
+        }
+        let checkCity = () =>{
+            let bidaltzekoOK = true;
+
+            let cit = document.getElementById("city");
+            cit.setCustomValidity("");
+
+            let city = cit.value;
+            let cityRegex = /^[a-z]+$/i;
+            if (city.length<3 || !cityRegex.test(city) ) {
+                cit.setCustomValidity("Hiriburuaren izena gutxienez 3 hizki izan behar ditu, ezin du zenbakiak eduki");
+                bidaltzekoOK = false;
+            }
             return bidaltzekoOK;
         }
 
 
         window.onload = () => {
-            document.getElementById("abizena").oninput = check;
+            document.getElementById("izena").oninput = check;
             document.querySelector("#formularioa").addEventListener("submit", (e) => {
                 e.preventDefault();
                 if (check()) e.target.submit();
+            });
+
+            document.getElementById("ConfirmPassword").oninput = checkPassword;
+            document.getElementById("password").oninput = checkPassword;
+            document.querySelector("#formularioa").addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (checkPassword()) e.target.submit();
+            });
+
+            document.getElementById("city").oninput = checkCity;
+            document.querySelector("#formularioa").addEventListener("submit", (e) => {
+                e.preventDefault();
+                if (checkCity()) e.target.submit();
             });
 
         };
@@ -58,30 +85,30 @@
 </head>
 <body>
     <form action="/bezeroa" method="POST" id="formularioa">
-        Izena: <input type="text" name="izena" required><br>
-        Abizena: <input type="text" name="abizena" id="abizena"><br>
-        Email: <input type="email" name="email" id="email" required><br>
-        Password: <input type="password" name="password" id="password" required><br>
-        Confirm Password: <input type="password" name="ConfirmPassword" id="ConfirmPassword" required><br>
-        Gender: 
+        Izena: <input type="text" name="izena" id="izena" required><br>
+        <br>Email: <input type="email" name="email" id="email" required><br>
+        <br>Password: <input type="password" name="password" id="password" required><br>
+        <br>Confirm Password: <input type="password" name="ConfirmPassword" id="ConfirmPassword" required><br>
+        <br>Gender: 
         <select name="gender" id="gender"><br>
             <option value="emakumea">Emakumea</option>
             <option value="gizona">Gizona</option>
             <option value="besteBat">Beste bat</option>
         </select>
         <br>
-        Date of Birth: <input type="date" name="birth" id="birth" required><br>
-        Address: 
+        <br>Date of Birth: <input type="date" name="birth" id="birth" required><br>
+        <br>Address: 
         <textarea id="address" name="address"></textarea>
         <br>
-        City: <input type="text" name="city" id="city" required><br>
-        Zip Code: <input type="number" name="ZipCode" id="ZipCode" required><br>
-        I agree to the terms and conditions:<input type="checkbox" name="conditions" id="conditions" required>
-        <br>
-        <label>I want to receive the newsletter:</label>
-        Yes <input type="radio" id="yes" name="newsletter" value="yes">
-        No <input type="radio" id="no" name="newsletter" value="no">
-        <br>
+        <br>City: <input type="text" name="city" id="city" required><br>
+        <br>Zip Code: <input type="text" name="ZipCode" id="ZipCode" required><br>
+        <br>I agree to the terms and conditions:<input type="checkbox" name="conditions" id="conditions" required><br>
+        <div style="border-style:solid; max-width:250px; padding: 5px;">
+            <label>I want to receive the newsletter:</label> <br>
+            Yes <input type="radio" id="yes" name="newsletter" value="yes" required>
+            No <input type="radio" id="no" name="newsletter" value="no" required>
+            <br>
+        </div>
         <input type="submit" value="Bidali">
      </form>
 </body>
